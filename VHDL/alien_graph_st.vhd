@@ -5,7 +5,7 @@ use ieee.numeric_std.all;
 -- btn connected to up/down pushbuttons for now but
 -- eventually will get data from UART
 
-entity pong_graph_st is
+entity alien_graph_st is
     port(
         clk, reset: in std_logic;
         btn: in std_logic_vector(3 downto 0);
@@ -13,9 +13,9 @@ entity pong_graph_st is
         pixel_x, pixel_y: in std_logic_vector(9 downto 0);
         graph_rgb: out std_logic_vector(2 downto 0)
     );
-end pong_graph_st;
+end alien_graph_st;
 
-architecture sq_asteroids_arch of pong_graph_st is
+architecture sq_asteroids_arch of alien_graph_st is
 
     -- Signal used to control speed of small_asteroid and how
     -- often pushbuttons are checked for paddle movement.
@@ -136,8 +136,8 @@ architecture sq_asteroids_arch of pong_graph_st is
     signal rom_small_addr, rom_small_col: unsigned(2 downto 0);
     signal rom_small_addr_two, rom_small_col_two: unsigned(2 downto 0);
     signal rom_small_addr_three, rom_small_col_three: unsigned(2 downto 0);
-    signal rom_big_addr, rom_big_col: unsigned(2 downto 0):
-    signal rom_big_addr_two, rom_big_col_two: unsigned(2 downto 0):
+    signal rom_big_addr, rom_big_col: unsigned(2 downto 0);
+    signal rom_big_addr_two, rom_big_col_two: unsigned(2 downto 0);
     signal rom_small_data, rom_small_data_two, rom_small_data_three: std_logic_vector(7 downto 0);
     signal rom_big_data, rom_big_data_two: std_logic_vector(15 downto 0);
     signal rom_small_bit, rom_small_bit_two, rom_small_bit_three: std_logic;
@@ -445,10 +445,10 @@ architecture sq_asteroids_arch of pong_graph_st is
 -- Set the value of the next small asteroid position according to
 -- the boundaries.
     process(x_small_delta_reg, y_small_delta_reg, x_smallTwo_delta_reg, y_smallTwo_delta_reg,
-        x_smallThree_delta_reg, y_smallThree_delta_reg smallRockOne_y_t, smallRockOne_x_l,
+        x_smallThree_delta_reg, y_smallThree_delta_reg, smallRockOne_y_t, smallRockOne_x_l,
         smallRockOne_x_r, smallRockOne_y_b, smallRockTwo_y_t, smallRockTwo_x_l,
         smallRockTwo_x_r, smallRockTwo_y_b, smallRockThree_y_t, smallRockThree_x_l,
-        smallRockThree_x_r, smallRockThree_y_b bar_y_t, bar_y_b)
+        smallRockThree_x_r, smallRockThree_y_b, bar_y_t, bar_y_b)
         begin
         x_small_delta_next <= x_small_delta_reg;
         y_small_delta_next <= y_small_delta_reg;

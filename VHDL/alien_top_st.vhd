@@ -29,8 +29,8 @@ architecture arch of alien_top_st is
             video_on=>video_on, p_tick=>p_tick,
             pixel_x=>pixel_x, pixel_y=>pixel_y);
     -- instantiate pixel generation circuit
-    pong_alien_st_unit: entity
-        work.pong_alien_st(sq_asteroids_arch)
+    alien_graph_st_unit: entity
+        work.alien_graph_st(sq_asteroids_arch)
         port map(clk=>clk, reset=>reset, btn=>btn,
             video_on=>video_on, pixel_x=>pixel_x,
             pixel_y=>pixel_y, graph_rgb=>rgb_next);
