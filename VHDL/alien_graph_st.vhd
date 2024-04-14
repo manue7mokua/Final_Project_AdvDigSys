@@ -235,8 +235,14 @@ architecture sq_asteroids_arch of alien_graph_st is
             bigRockTwo_y_reg <= (others => '0');
             x_small_delta_reg <= ("0000000100");
             y_small_delta_reg <= ("0000000100");
+            x_smallTwo_delta_reg <= ("0000000100");
+            y_smallTwo_delta_reg <= ("0000000100");
+            x_smallThree_delta_reg <= ("0000000100");
+            y_smallThree_delta_reg <= ("0000000100");
             x_big_delta_reg <= ("0000000100");
             y_big_delta_reg <= ("0000000100");
+            x_bigTwo_delta_reg <= ("0000000100");
+            y_bigTwo_delta_reg <= ("0000000100");
         elsif (clk'event and clk = '1') then
             bar_x_reg <= bar_x_next;
             bar_y_reg <= bar_y_next;
@@ -252,8 +258,14 @@ architecture sq_asteroids_arch of alien_graph_st is
             bigRockTwo_y_reg <= bigRockTwo_y_next;
             x_small_delta_reg <= x_small_delta_next;
             y_small_delta_reg <= y_small_delta_next;
+            x_smallTwo_delta_reg <= x_smallTwo_delta_next;
+            y_smallTwo_delta_reg <= y_smallTwo_delta_next;
+            x_smallThree_delta_reg <= x_smallThree_delta_next;
+            y_smallThree_delta_reg <= y_smallThree_delta_next;
             x_big_delta_reg <= x_big_delta_next;
             y_big_delta_reg <= y_big_delta_next;
+            x_bigTwo_delta_reg <= x_bigTwo_delta_next;
+            y_bigTwo_delta_reg <= y_bigTwo_delta_next;
         end if;
     end process;
 
