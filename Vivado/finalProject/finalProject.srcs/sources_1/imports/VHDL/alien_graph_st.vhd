@@ -287,8 +287,8 @@ architecture sq_asteroids_arch of alien_graph_st is
     bar_x_r <= bar_x_l + BAR_X_SIZE - 1;
     bar_y_t <= bar_y_reg;
     bar_y_b <= bar_y_t + BAR_Y_SIZE - 1;
-    bar_on <= '1' when (BAR_X_L <= pix_x) and
-        (pix_x <= BAR_X_R) and (bar_y_t <= pix_y) and
+    bar_on <= '1' when (bar_x_l <= pix_x) and
+        (pix_x <= bar_x_r) and (bar_y_t <= pix_y) and
         (pix_y <= bar_y_b) else '0';
     bar_rgb <= "101"; -- black
 
@@ -478,8 +478,8 @@ architecture sq_asteroids_arch of alien_graph_st is
         elsif (smallRockOne_x_l <= WALL_X_R ) then
             x_small_delta_next <= SMALLROCK_V_P;
             -- right corner of small asteroid inside bar
-        elsif ((BAR_X_L <= smallRockOne_x_r) and
-            (smallRockOne_x_r <= BAR_X_R)) then
+        elsif ((bar_x_l <= smallRockOne_x_r) and
+            (smallRockOne_x_r <= bar_x_r)) then
             -- some portion of small asteroid hitting paddle, reverse dir
             if ((bar_y_t <= smallRockOne_y_b) and
             (smallRockOne_y_t <= bar_y_b)) then
@@ -497,8 +497,8 @@ architecture sq_asteroids_arch of alien_graph_st is
             elsif (smallRockTwo_x_l <= WALL_X_R ) then
                 x_smallTwo_delta_next <= SMALLROCK_V_P;
                 -- right corner of small asteroid inside bar
-            elsif ((BAR_X_L <= smallRockTwo_x_r) and
-                (smallRocktwo_x_r <= BAR_X_R)) then
+            elsif ((bar_x_l <= smallRockTwo_x_r) and
+                (smallRocktwo_x_r <= bar_x_r)) then
                 -- some portion of small asteroid hitting paddle, reverse dir
                 if ((bar_y_t <= smallRockTwo_y_b) and
                 (smallRockTwo_y_t <= bar_y_b)) then
@@ -516,8 +516,8 @@ architecture sq_asteroids_arch of alien_graph_st is
             elsif (smallRockThree_x_l <= WALL_X_R ) then
                 x_smallThree_delta_next <= SMALLROCK_V_P;
                 -- right corner of small asteroid inside bar
-            elsif ((BAR_X_L <= smallRockThree_x_r) and
-                (smallRockThree_x_r <= BAR_X_R)) then
+            elsif ((bar_x_l <= smallRockThree_x_r) and
+                (smallRockThree_x_r <= bar_x_r)) then
                 -- some portion of small asteroid hitting paddle, reverse dir
                 if ((bar_y_t <= smallRockThree_y_b) and
                 (smallRockThree_y_t <= bar_y_b)) then
@@ -544,8 +544,8 @@ architecture sq_asteroids_arch of alien_graph_st is
         elsif (bigRockOne_x_l <= WALL_X_R ) then
             x_big_delta_next <= BIGROCK_V_P;
             -- right corner of small asteroid inside bar
-        elsif ((BAR_X_L <= bigRockOne_x_r) and
-            (bigRockOne_x_r <= BAR_X_R)) then
+        elsif ((bar_x_l <= bigRockOne_x_r) and
+            (bigRockOne_x_r <= bar_x_r)) then
             -- some portion of small asteroid hitting paddle, reverse dir
             if ((bigRockOne_y_t <= bigRockOne_y_b) and
             (bigRockOne_y_t <= bigRockOne_y_b)) then
@@ -563,8 +563,8 @@ architecture sq_asteroids_arch of alien_graph_st is
         elsif (bigRockTwo_x_l <= WALL_X_R ) then
             x_bigTwo_delta_next <= BIGROCK_V_P;
             -- right corner of small asteroid inside bar
-        elsif ((BAR_X_L <= bigRockTwo_x_r) and
-            (bigRockTwo_x_r <= BAR_X_R)) then
+        elsif ((bar_x_l <= bigRockTwo_x_r) and
+            (bigRockTwo_x_r <= bar_x_r)) then
             -- some portion of small asteroid hitting paddle, reverse dir
             if ((bigRockTwo_y_t <= bigRockTwo_y_b) and
             (bigRockTwo_y_t <= bigRockTwo_y_b)) then
