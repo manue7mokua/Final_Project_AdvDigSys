@@ -37,8 +37,8 @@ architecture sq_asteroids_arch of alien_graph_st is
 -- allow movement. bar_y_t driven by reg below.
     signal bar_x_l, bar_x_r: unsigned(9 downto 0);
     signal bar_y_t, bar_y_b: unsigned(9 downto 0);
-    constant BAR_X_SIZE: integer := 4;
-    constant BAR_Y_SIZE: integer := 72;
+    constant BAR_X_SIZE: integer := 8;
+    constant BAR_Y_SIZE: integer := 24;
 
 -- reg to track top boundary
     signal bar_x_reg, bar_x_next: unsigned(9 downto 0);
@@ -46,7 +46,7 @@ architecture sq_asteroids_arch of alien_graph_st is
 
 -- bar moving velocity when a button is pressed
 -- the amount the bar is moved.
-    constant BAR_V: integer:= 7;
+    constant BAR_V: integer:= 4;
 
 -- square small asteroid -- small asteroid left, right, top and bottom
 -- all vary. Left and top driven by registers below.
