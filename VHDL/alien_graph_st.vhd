@@ -331,14 +331,14 @@ architecture sq_asteroids_arch of alien_graph_st is
     -- set coordinates of 2nd square small asteroid.
     smallRockTwo_x_l <= smallRockTwo_x_reg;
     smallRockTwo_y_t <= smallRockTwo_y_reg;
-    smallRockTwo_x_r <= smallRockTwo_x_l + SMALLROCK_TWO_SIZE - 4;
-    smallRockTwo_y_b <= smallRockTwo_y_t + SMALLROCK_TWO_SIZE - 4;
+    smallRockTwo_x_r <= smallRockTwo_x_l + SMALLROCK_TWO_SIZE - 5;
+    smallRockTwo_y_b <= smallRockTwo_y_t + SMALLROCK_TWO_SIZE - 5;
 
     -- set coordinates of 3rd square small asteroid.
     smallRockThree_x_l <= smallRockThree_x_reg;
     smallRockThree_y_t <= smallRockThree_y_reg;
-    smallRockThree_x_r <= smallRockThree_x_l + SMALLROCK_THREE_SIZE - 12;
-    smallRockThree_y_b <= smallRockThree_y_t + SMALLROCK_THREE_SIZE - 12;
+    smallRockThree_x_r <= smallRockThree_x_l + SMALLROCK_THREE_SIZE - 9;
+    smallRockThree_y_b <= smallRockThree_y_t + SMALLROCK_THREE_SIZE - 9;
 
     -- set coordinates of big asteroid
     bigRockOne_x_l <= bigRockOne_x_reg;
@@ -349,8 +349,8 @@ architecture sq_asteroids_arch of alien_graph_st is
     -- set coordinates of big asteroid
     bigRockTwo_x_l <= bigRockTwo_x_reg;
     bigRockTwo_y_t <= bigRockTwo_y_reg;
-    bigRockTwo_x_r <= bigRockTwo_x_l + BIGROCK_TWO_SIZE - 7;
-    bigRockTwo_y_b <= bigRockTwo_y_t + BIGROCK_TWO_SIZE - 7;
+    bigRockTwo_x_r <= bigRockTwo_x_l + BIGROCK_TWO_SIZE - 3;
+    bigRockTwo_y_b <= bigRockTwo_y_t + BIGROCK_TWO_SIZE - 3;
 
     -- pixel within 1st square small asteroid
     sq_smallRockOne_on <= '1' when (smallRockOne_x_l <= pix_x) and
