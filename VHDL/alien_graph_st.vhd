@@ -136,8 +136,8 @@ architecture sq_asteroids_arch of alien_graph_st is
     signal rom_small_addr, rom_small_col: unsigned(2 downto 0);
     signal rom_small_addr_two, rom_small_col_two: unsigned(2 downto 0);
     signal rom_small_addr_three, rom_small_col_three: unsigned(2 downto 0);
-    signal rom_big_addr, rom_big_col: unsigned(2 downto 0);
-    signal rom_big_addr_two, rom_big_col_two: unsigned(2 downto 0);
+    signal rom_big_addr, rom_big_col: unsigned(3 downto 0);
+    signal rom_big_addr_two, rom_big_col_two: unsigned(3 downto 0);
     signal rom_small_data, rom_small_data_two, rom_small_data_three: std_logic_vector(7 downto 0);
     signal rom_big_data, rom_big_data_two: std_logic_vector(15 downto 0);
     signal rom_small_bit, rom_small_bit_two, rom_small_bit_three: std_logic;
