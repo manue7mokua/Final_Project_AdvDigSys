@@ -1,35 +1,10 @@
 <?xml version="1.0"?>
 <ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="Mokua Manuel" Host="MANUE7" Pid="10048" HostCore="4" HostMemory="08464732160">
+    <Process Command="vivado.bat" Owner="Mokua Manuel" Host="MANUE7" Pid="12108" HostCore="4" HostMemory="08464732160">
     </Process>
 </ProcessHandle>
 <?xml version="1.0"?>
 <ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="Mokua Manuel" Host="MANUE7" Pid="9796" HostCore="4" HostMemory="08464732160">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="Mokua Manuel" Host="MANUE7" Pid="9456" HostCore="4" HostMemory="08464732160">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="Mokua Manuel" Host="MANUE7" Pid="8848" HostCore="4" HostMemory="08464732160">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="Mokua Manuel" Host="MANUE7" Pid="10152" HostCore="4" HostMemory="08464732160">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="Mokua Manuel" Host="MANUE7" Pid="11340" HostCore="4" HostMemory="08464732160">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="Mokua Manuel" Host="MANUE7" Pid="11596" HostCore="4" HostMemory="08464732160">
+    <Process Command="vivado.bat" Owner="Mokua Manuel" Host="MANUE7" Pid="13216" HostCore="4" HostMemory="08464732160">
     </Process>
 </ProcessHandle>
