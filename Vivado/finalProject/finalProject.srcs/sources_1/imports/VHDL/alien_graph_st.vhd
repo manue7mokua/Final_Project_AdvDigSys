@@ -93,8 +93,8 @@ architecture sq_asteroids_arch of alien_graph_st is
     signal y_bigTwo_delta_reg, y_bigTwo_delta_next: unsigned(9 downto 0);
 
 -- small asteroid movement can be pos or neg
-    constant SMALLROCK_V_P: unsigned(9 downto 0):= to_unsigned(2,10);
-    constant SMALLROCK_V_N: unsigned(9 downto 0):= unsigned(to_signed(-2,10));
+    constant SMALLROCK_V_P: unsigned(9 downto 0):= to_unsigned(1,10);
+    constant SMALLROCK_V_N: unsigned(9 downto 0):= unsigned(to_signed(-1,10));
 
 -- round small asteroid image
     type rom_type_smallRockOne is array(0 to 7) of std_logic_vector(0 to 7);
@@ -174,10 +174,10 @@ architecture sq_asteroids_arch of alien_graph_st is
         "0011111111111100",
         "0011111111111100",
         "1111111111111111",
-        "1111110000111111",
-        "1111110000111111",
-        "1111110000111111",
-        "1111110000111111",
+        "1111111111111111",
+        "1111111111111111",
+        "1111111111111111",
+        "1111111111111111",
         "1111111111111111",
         "0011111111111100",
         "0011111111111100",
@@ -194,10 +194,10 @@ architecture sq_asteroids_arch of alien_graph_st is
         "0011111111111100",
         "0011111111111100",
         "1111111111111111",
-        "1111110000111111",
-        "1111110000111111",
-        "1111110000111111",
-        "1111110000111111",
+        "1111111111111111",
+        "1111111111111111",
+        "1111111111111111",
+        "1111111111111111",
         "1111111111111111",
         "0011111111111100",
         "0011111111111100",
@@ -290,7 +290,7 @@ architecture sq_asteroids_arch of alien_graph_st is
     bar_on <= '1' when (bar_x_l <= pix_x) and
         (pix_x <= bar_x_r) and (bar_y_t <= pix_y) and
         (pix_y <= bar_y_b) else '0';
-    bar_rgb <= "101"; -- cyan
+    bar_rgb <= "101"; -- pink
 
 -- Process bar movement requests (UP and DOWN)
     process( bar_y_reg, bar_y_b, bar_y_t, refr_tick, btn)
@@ -456,18 +456,11 @@ architecture sq_asteroids_arch of alien_graph_st is
 
 -- Set the value of the next small asteroid position according to
 -- the boundaries.
-    process(x_small_delta_reg, y_small_delta_reg, x_smallTwo_delta_reg, y_smallTwo_delta_reg,
-        x_smallThree_delta_reg, y_smallThree_delta_reg, smallRockOne_y_t, smallRockOne_x_l,
-        smallRockOne_x_r, smallRockOne_y_b, smallRockTwo_y_t, smallRockTwo_x_l,
-        smallRockTwo_x_r, smallRockTwo_y_b, smallRockThree_y_t, smallRockThree_x_l,
-        smallRockThree_x_r, smallRockThree_y_b, bar_y_t, bar_y_b)
+    process(x_small_delta_reg, y_small_delta_reg, smallRockOne_y_t, smallRockOne_x_l,
+        smallRockOne_x_r, smallRockOne_y_b, bar_y_t, bar_y_b)
         begin
         x_small_delta_next <= x_small_delta_reg;
         y_small_delta_next <= y_small_delta_reg;
-        x_smallTwo_delta_next <= x_smallTwo_delta_reg;
-        y_smallTwo_delta_next <= y_smallTwo_delta_reg;
-        x_smallThree_delta_next <= x_smallThree_delta_reg;
-        y_smallThree_delta_next <= y_smallThree_delta_reg;
 -- small asteroid reached top, make offset positive
         if ( smallRockOne_y_t < 1 ) then
         y_small_delta_next <= SMALLROCK_V_P;
@@ -484,7 +477,13 @@ architecture sq_asteroids_arch of alien_graph_st is
             x_small_delta_next <= SMALLROCK_V_N;
             end if;
         end if;
+    end process;
 
+    process(x_smallTwo_delta_reg, y_smallTwo_delta_reg, smallRockTwo_y_t, smallRockTwo_x_l,
+        smallRockTwo_x_r, smallRockTwo_y_b, bar_y_t, bar_y_b)
+        begin
+        x_smallTwo_delta_next <= x_smallTwo_delta_reg;
+        y_smallTwo_delta_next <= y_smallTwo_delta_reg;    
 -- 2nd small asteroid logic
         if ( smallRockTwo_y_t < 1 ) then
             y_smallTwo_delta_next <= SMALLROCK_V_P;
@@ -501,7 +500,13 @@ architecture sq_asteroids_arch of alien_graph_st is
                 x_smallTwo_delta_next <= SMALLROCK_V_N;
             end if;
         end if;
+    end process;
 
+    process(x_smallThree_delta_reg, y_smallThree_delta_reg, smallRockThree_y_t, smallRockThree_x_l,
+        smallRockThree_x_r, smallRockThree_y_b, bar_y_t, bar_y_b)
+        begin
+        x_smallThree_delta_next <= x_smallThree_delta_reg;
+        y_smallThree_delta_next <= y_smallThree_delta_reg;
 -- 3rd asteroid logic
         if ( smallRockThree_y_t < 1 ) then
             y_smallThree_delta_next <= SMALLROCK_V_P;
@@ -520,14 +525,11 @@ architecture sq_asteroids_arch of alien_graph_st is
         end if;
     end process;
 
-    process(x_big_delta_reg, y_big_delta_reg, x_bigTwo_delta_reg, y_bigTwo_delta_reg,
-        bar_y_t, bar_y_b, bigRockOne_y_b, bigRockOne_y_t, bigRockOne_x_l, bigRockOne_x_r, 
-        bigRockTwo_y_b, bigRockTwo_y_t, bigRockTwo_x_l, bigRockTwo_x_r)
+    process(x_big_delta_reg, y_big_delta_reg, bar_y_t, bar_y_b, bigRockOne_y_b, 
+    bigRockOne_y_t, bigRockOne_x_l, bigRockOne_x_r)
         begin
         x_big_delta_next <= x_big_delta_reg;
         y_big_delta_next <= y_big_delta_reg;
-        x_bigTwo_delta_next <= x_bigTwo_delta_reg;
-        y_bigTwo_delta_next <= y_bigTwo_delta_reg;
     -- Big Asteroid reached top, make offset positive
         if ( bigRockOne_y_t < 1 ) then
             y_big_delta_next <= BIGROCK_V_P;
@@ -544,7 +546,13 @@ architecture sq_asteroids_arch of alien_graph_st is
                 x_big_delta_next <= BIGROCK_V_N;
             end if;
         end if;
+    end process;
 
+    process(x_bigTwo_delta_reg, y_bigTwo_delta_reg,bar_y_t, bar_y_b, 
+        bigRockTwo_y_b, bigRockTwo_y_t, bigRockTwo_x_l, bigRockTwo_x_r)
+        begin 
+        x_bigTwo_delta_next <= x_bigTwo_delta_reg;
+        y_bigTwo_delta_next <= y_bigTwo_delta_reg;   
     -- 2nd BIG Asteroid reached top, make offset positive
         if ( bigRockTwo_y_t < 1 ) then
             y_bigTwo_delta_next <= BIGROCK_V_P;
