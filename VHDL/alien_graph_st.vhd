@@ -113,10 +113,10 @@ architecture sq_asteroids_arch of alien_graph_st is
     constant SMALLROCKTWO_ROM: rom_type_smallRockTwo:= (
         "00111100",
         "01111110",
-        "01100110",
-        "11100111",
-        "11100111",
-        "01100110",
+        "01111110",
+        "11111111",
+        "11111111",
+        "01111110",
         "01111110",
         "00111100"
     );
@@ -125,10 +125,10 @@ architecture sq_asteroids_arch of alien_graph_st is
     constant SMALLROCKTHREE_ROM: rom_type_smallRockThree:= (
         "00111100",
         "01111110",
-        "01100110",
-        "11100111",
-        "11100111",
-        "01100110",
+        "01111110",
+        "11111111",
+        "11111111",
+        "01111110",
         "01111110",
         "00111100"
     );
