@@ -38,7 +38,7 @@ architecture sq_asteroids_arch of alien_graph_st is
     signal bar_x_l, bar_x_r: unsigned(9 downto 0);
     signal bar_y_t, bar_y_b: unsigned(9 downto 0);
     constant BAR_X_SIZE: integer := 8;
-    constant BAR_Y_SIZE: integer := 24;
+    constant BAR_Y_SIZE: integer := 16;
 
 -- reg to track top boundary
     signal bar_x_reg, bar_x_next: unsigned(9 downto 0);
@@ -46,7 +46,7 @@ architecture sq_asteroids_arch of alien_graph_st is
 
 -- bar moving velocity when a button is pressed
 -- the amount the bar is moved.
-    constant BAR_V: integer:= 4;
+    constant BAR_V: integer:= 2;
 
 -- square small asteroid -- small asteroid left, right, top and bottom
 -- all vary. Left and top driven by registers below.
@@ -172,14 +172,14 @@ architecture sq_asteroids_arch of alien_graph_st is
         "0001111111111000",
         "0011111111111100",
         "0011111111111100",
-        "0111111111111110",
-        "0111111111111110",
+        "0011111111111100",
+        "1111111111111111",
         "1111110000111111",
-        "0011111001111100",
-        "0011111001111100",
         "1111110000111111",
-        "0111111111111110",
-        "0111111111111110",
+        "1111110000111111",
+        "1111110000111111",
+        "1111111111111111",
+        "0011111111111100",
         "0011111111111100",
         "0011111111111100",
         "0001111111111000",
@@ -192,14 +192,14 @@ architecture sq_asteroids_arch of alien_graph_st is
         "0001111111111000",
         "0011111111111100",
         "0011111111111100",
-        "0111111111111110",
-        "0111111111111110",
+        "0011111111111100",
+        "1111111111111111",
         "1111110000111111",
-        "0011111001111100",
-        "0011111001111100",
         "1111110000111111",
-        "0111111111111110",
-        "0111111111111110",
+        "1111110000111111",
+        "1111110000111111",
+        "1111111111111111",
+        "0011111111111100",
         "0011111111111100",
         "0011111111111100",
         "0001111111111000",
@@ -478,11 +478,9 @@ architecture sq_asteroids_arch of alien_graph_st is
         elsif (smallRockOne_x_l <= WALL_X_R ) then
             x_small_delta_next <= SMALLROCK_V_P;
             -- right corner of small asteroid inside bar
-        elsif ((bar_x_l <= smallRockOne_x_r) and
-            (smallRockOne_x_r <= bar_x_r)) then
+        elsif ((bar_x_l <= smallRockOne_x_r) and (smallRockOne_x_r <= bar_x_r)) then
             -- some portion of small asteroid hitting paddle, reverse dir
-            if ((bar_y_t <= smallRockOne_y_b) and
-            (smallRockOne_y_t <= bar_y_b)) then
+            if ((bar_y_t <= smallRockOne_y_b) and (smallRockOne_y_t <= bar_y_b)) then
             x_small_delta_next <= SMALLROCK_V_N;
             end if;
         end if;
@@ -491,39 +489,35 @@ architecture sq_asteroids_arch of alien_graph_st is
         if ( smallRockTwo_y_t < 1 ) then
             y_smallTwo_delta_next <= SMALLROCK_V_P;
     -- reached bottom, make negative
-            elsif (smallRockTwo_y_b > (MAX_Y - 1)) then
-                y_smallTwo_delta_next <= SMALLROCK_V_N;
-                -- reach wall, bounce back
-            elsif (smallRockTwo_x_l <= WALL_X_R ) then
-                x_smallTwo_delta_next <= SMALLROCK_V_P;
-                -- right corner of small asteroid inside bar
-            elsif ((bar_x_l <= smallRockTwo_x_r) and
-                (smallRocktwo_x_r <= bar_x_r)) then
-                -- some portion of small asteroid hitting paddle, reverse dir
-                if ((bar_y_t <= smallRockTwo_y_b) and
-                (smallRockTwo_y_t <= bar_y_b)) then
+        elsif (smallRockTwo_y_b > (MAX_Y - 1)) then
+            y_smallTwo_delta_next <= SMALLROCK_V_N;
+    -- reach wall, bounce back
+        elsif (smallRockTwo_x_l <= WALL_X_R ) then
+            x_smallTwo_delta_next <= SMALLROCK_V_P;
+    -- right corner of small asteroid inside bar
+        elsif ((bar_x_l <= smallRockTwo_x_r) and (smallRocktwo_x_r <= bar_x_r)) then
+        -- some portion of small asteroid hitting paddle, reverse dir
+            if ((bar_y_t <= smallRockTwo_y_b) and (smallRockTwo_y_t <= bar_y_b)) then
                 x_smallTwo_delta_next <= SMALLROCK_V_N;
-                end if;
             end if;
+        end if;
 
 -- 3rd asteroid logic
         if ( smallRockThree_y_t < 1 ) then
             y_smallThree_delta_next <= SMALLROCK_V_P;
     -- reached bottom, make negative
-            elsif (smallRockThree_y_b > (MAX_Y - 1)) then
-                y_smallThree_delta_next <= SMALLROCK_V_N;
-                -- reach wall, bounce back
-            elsif (smallRockThree_x_l <= WALL_X_R ) then
-                x_smallThree_delta_next <= SMALLROCK_V_P;
-                -- right corner of small asteroid inside bar
-            elsif ((bar_x_l <= smallRockThree_x_r) and
-                (smallRockThree_x_r <= bar_x_r)) then
-                -- some portion of small asteroid hitting paddle, reverse dir
-                if ((bar_y_t <= smallRockThree_y_b) and
-                (smallRockThree_y_t <= bar_y_b)) then
+        elsif (smallRockThree_y_b > (MAX_Y - 1)) then
+            y_smallThree_delta_next <= SMALLROCK_V_N;
+    -- reach wall, bounce back
+        elsif (smallRockThree_x_l <= WALL_X_R ) then
+            x_smallThree_delta_next <= SMALLROCK_V_P;
+    -- right corner of small asteroid inside bar
+        elsif ((bar_x_l <= smallRockThree_x_r) and (smallRockThree_x_r <= bar_x_r)) then
+    -- some portion of small asteroid hitting paddle, reverse dir
+            if ((bar_y_t <= smallRockThree_y_b) and (smallRockThree_y_t <= bar_y_b)) then
                 x_smallThree_delta_next <= SMALLROCK_V_N;
-                end if;
             end if;
+        end if;
     end process;
 
     process(x_big_delta_reg, y_big_delta_reg, x_bigTwo_delta_reg, y_bigTwo_delta_reg,
@@ -544,12 +538,10 @@ architecture sq_asteroids_arch of alien_graph_st is
         elsif (bigRockOne_x_l <= WALL_X_R ) then
             x_big_delta_next <= BIGROCK_V_P;
             -- right corner of small asteroid inside bar
-        elsif ((bar_x_l <= bigRockOne_x_r) and
-            (bigRockOne_x_r <= bar_x_r)) then
+        elsif ((bar_x_l <= bigRockOne_x_r) and (bigRockOne_x_r <= bar_x_r)) then
             -- some portion of small asteroid hitting paddle, reverse dir
-            if ((bigRockOne_y_t <= bigRockOne_y_b) and
-            (bigRockOne_y_t <= bigRockOne_y_b)) then
-            x_big_delta_next <= BIGROCK_V_N;
+            if ((bar_y_t <= bigRockOne_y_b) and (bigRockOne_y_t <= bar_y_b)) then
+                x_big_delta_next <= BIGROCK_V_N;
             end if;
         end if;
 
@@ -562,13 +554,11 @@ architecture sq_asteroids_arch of alien_graph_st is
             -- reach wall, bounce back
         elsif (bigRockTwo_x_l <= WALL_X_R ) then
             x_bigTwo_delta_next <= BIGROCK_V_P;
-            -- right corner of small asteroid inside bar
-        elsif ((bar_x_l <= bigRockTwo_x_r) and
-            (bigRockTwo_x_r <= bar_x_r)) then
-            -- some portion of small asteroid hitting paddle, reverse dir
-            if ((bigRockTwo_y_t <= bigRockTwo_y_b) and
-            (bigRockTwo_y_t <= bigRockTwo_y_b)) then
-            x_bigTwo_delta_next <= BIGROCK_V_N;
+            -- right corner of big asteroid inside bar
+        elsif ((bar_x_l <= bigRockTwo_x_r) and (bigRockTwo_x_r <= bar_x_r)) then
+            -- some portion of big asteroid hitting paddle, reverse dir
+            if ((bar_y_t <= bigRockTwo_y_b) and (bigRockTwo_y_t <= bar_y_b)) then
+                x_bigTwo_delta_next <= BIGROCK_V_N;
             end if;
         end if;
     end process;

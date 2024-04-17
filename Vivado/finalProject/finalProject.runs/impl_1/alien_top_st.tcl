@@ -127,7 +127,7 @@ set rc [catch {
   create_msg_db write_bitstream.pb
   set_param checkpoint.writeSynthRtdsInDcp 1
   set_param chipscope.maxJobs 1
-  set_param xicom.use_bs_reader 1
+  set_param synth.incrementalSynthesisCache {C:/Users/Mokua Manuel/AppData/Roaming/Xilinx/Vivado/.Xil/Vivado-4576-Manue7/incrSyn}
   set_param runs.launchOptions { -jobs 2  }
   open_checkpoint alien_top_st_routed.dcp
   set_property webtalk.parent_dir {C:/Users/Mokua Manuel/OneDrive/Desktop/Final_Project_AdvDigSys/Vivado/finalProject/finalProject.cache/wt} [current_project]
