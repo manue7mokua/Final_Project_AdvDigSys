@@ -383,14 +383,14 @@ architecture sq_asteroids_arch of alien_graph_st is
     rom_small_addr <= pix_y(2 downto 0) - smallRockOne_y_t(2 downto 0);
     rom_small_addr_two <= pix_y(2 downto 0) - smallRockTwo_y_t(2 downto 0);
     rom_small_addr_three <= pix_y(2 downto 0) - smallRockThree_y_t(2 downto 0);
-    rom_big_addr <= pix_y(2 downto 0) - bigRockOne_y_t(2 downto 0);
-    rom_big_addr_two <= pix_y(2 downto 0) - bigRockTwo_y_t(2 downto 0);
+    rom_big_addr <= pix_y(3 downto 0) - bigRockOne_y_t(3 downto 0);
+    rom_big_addr_two <= pix_y(3 downto 0) - bigRockTwo_y_t(3 downto 0);
 -- ROM column
     rom_small_col <= pix_x(2 downto 0) - smallRockOne_x_l(2 downto 0);
     rom_small_col_two <= pix_x(2 downto 0) - smallRockTwo_x_l(2 downto 0);
     rom_small_col_three <= pix_x(2 downto 0) - smallRockThree_x_l(2 downto 0);
-    rom_big_col <= pix_x(2 downto 0) - bigRockOne_x_l(2 downto 0);
-    rom_big_col_two <= pix_x(2 downto 0) - bigRockTwo_x_l(2 downto 0);
+    rom_big_col <= pix_x(3 downto 0) - bigRockOne_x_l(3 downto 0);
+    rom_big_col_two <= pix_x(3 downto 0) - bigRockTwo_x_l(3 downto 0);
 -- Get row data
     rom_small_data <= SMALLROCKONE_ROM(to_integer(rom_small_addr));
     rom_small_data_two <= SMALLROCKTWO_ROM(to_integer(rom_small_addr_two));
