@@ -9,8 +9,10 @@ entity alien_graph_st is
     port(
         clk, reset: in std_logic;
         btn: in std_logic_vector(3 downto 0);
+        shoot_btn: in std_logic;
         video_on: in std_logic;
         pixel_x, pixel_y: in std_logic_vector(9 downto 0);
+        hit_cnt: out std_logic_vector(2 downto 0); 
         graph_rgb: out std_logic_vector(2 downto 0)
     );
 end alien_graph_st;
@@ -37,8 +39,8 @@ architecture sq_asteroids_arch of alien_graph_st is
 -- allow movement. bar_y_t driven by reg below.
     signal ship_x_l, ship_x_r: unsigned(9 downto 0);
     signal ship_y_t, ship_y_b: unsigned(9 downto 0);
-    constant SHIP_X_SIZE: integer := 8;
-    constant SHIP_Y_SIZE: integer := 16;
+    constant SHIP_X_SIZE: integer := 6;
+    constant SHIP_Y_SIZE: integer := 12;
 
 -- reg to track top boundary
     signal ship_x_reg, ship_x_next: unsigned(9 downto 0);
@@ -47,6 +49,36 @@ architecture sq_asteroids_arch of alien_graph_st is
 -- bar moving velocity when a button is pressed
 -- the amount the bar is moved.
     constant SHIP_V: integer:= 2;
+
+-- Firing missiles for asteroid
+    constant MISSILE_BALL_SIZE: integer := 8;
+    signal missile_ball_x_l, missile_ball_x_r: unsigned(9 downto 0);
+    signal missile_ball_y_t, missile_ball_y_b: unsigned(9 downto 0);
+
+    -- registers to calculate the position of missile
+    signal missile_ball_x_reg, missile_ball_x_next: unsigned(9 downto 0);
+    signal missile_ball_y_reg, missile_ball_y_next: unsigned(9 downto 0);
+
+    -- registers to track missile speeds
+    signal x_missile_delta_reg, x_missile_delta_next: unsigned(9 downto 0);
+    signal y_missile_delta_reg, y_missile_delta_next: unsigned(9 downto 0);
+
+    -- missile movement can be pos or neg
+    constant MISSILE_V_P: unsigned(9 downto 0):= to_unsigned(2,10);
+    constant MISSILE_V_N: unsigned(9 downto 0):= unsigned(to_signed(-2,10));
+
+    -- missile projectile image
+    type rom_type_Missile is array(0 to 7) of std_logic_vector(0 to 7);
+    constant MISSILE_BALL_ROM: rom_type_Missile:= (
+        "00011000",
+        "00111100",
+        "00111100",
+        "01111110",
+        "01111110",
+        "00111100",
+        "00111100",
+        "00011000"
+    );
 
 -- square small asteroid -- small asteroid left, right, top and bottom
 -- all vary. Left and top driven by registers below.
@@ -236,6 +268,10 @@ architecture sq_asteroids_arch of alien_graph_st is
         "00111100"
     );
 
+    signal rom_missile_addr, rom_missile_col: unsigned(2 downto 0);
+    signal rom_missile_addr_two, rom_missile_col_two: unsigned(2 downto 0);
+    signal rom_missile_data: std_logic_vector(7 downto 0);
+    signal rom_missile_bit:  std_logic;
     signal rom_small_addr, rom_small_col: unsigned(2 downto 0);
     signal rom_small_addr_two, rom_small_col_two: unsigned(2 downto 0);
     signal rom_small_addr_three, rom_small_col_three: unsigned(2 downto 0);
@@ -378,12 +414,14 @@ architecture sq_asteroids_arch of alien_graph_st is
 -- object output signals -- new signal to indicate if
 -- scan coord is within small asteroid
     signal wall_on, ship_on: std_logic;
+    signal sq_missile_ball_on, rd_missile_ball_on: std_logic;
     signal sq_smallRockOne_on, sq_smallRockTwo_on, sq_smallRockThree_on, sq_smallRockFour_on, sq_smallRockFive_on, sq_smallRockSix_on, sq_smallRockSeven_on: std_logic;
     signal sq_bigRockOne_on, sq_bigRockTwo_on, sq_bigRockThree_on, sq_bigRockFour_on: std_logic;
     signal rd_smallRockOne_on, rd_smallRockTwo_on, rd_smallRockThree_on, rd_smallRockFour_on, rd_smallRockFive_on, rd_smallRockSix_on, rd_smallRockSeven_on: std_logic;
     signal rd_bigRockOne_on, rd_bigRockTwo_on, rd_bigRockThree_on, rd_bigRockFour_on: std_logic;
 
     signal wall_rgb, ship_rgb: std_logic_vector(2 downto 0);
+    signal missile_ball_rgb: std_logic_vector(2 downto 0);
     signal smallRockOne_rgb, smallRockTwo_rgb, smallRockThree_rgb, smallRockFour_rgb, smallRockFive_rgb, smallRockSix_rgb, smallRockSeven_rgb: std_logic_vector(2 downto 0);
     signal bigRockOne_rgb, bigRockTwo_rgb, bigRockThree_rgb, bigRockFour_rgb: std_logic_vector(2 downto 0);
 
@@ -394,6 +432,8 @@ architecture sq_asteroids_arch of alien_graph_st is
         if (reset = '1') then
             ship_x_reg <= (others => '0');
             ship_y_reg <= (others => '0');
+            missile_ball_x_reg <= "0000001000";
+            missile_ball_y_reg <= "0000001000";
             smallRockOne_x_reg <= "0100000000";
             smallRockOne_y_reg <= "0100000000";
             smallRockTwo_x_reg <= "0000000010";
@@ -416,6 +456,8 @@ architecture sq_asteroids_arch of alien_graph_st is
             bigRockThree_y_reg <= "0000001000";
             bigRockFour_x_reg <= "0000001000";
             bigRockFour_y_reg <= "0000001000";
+            x_missile_delta_reg <= ("0000000100");
+            y_missile_delta_reg <= ("0000000100");
             x_small_delta_reg <= ("0000000100");
             y_small_delta_reg <= ("0000000100");
             x_smallTwo_delta_reg <= ("0000000100");
@@ -441,6 +483,8 @@ architecture sq_asteroids_arch of alien_graph_st is
         elsif (clk'event and clk = '1') then
             ship_x_reg <= ship_x_next;
             ship_y_reg <= ship_y_next;
+            missile_ball_x_reg <= missile_ball_x_next;
+            missile_ball_y_reg <= missile_ball_y_next;
             smallRockOne_x_reg <= smallRockOne_x_next;
             smallRockOne_y_reg <= smallRockOne_y_next;
             smallRockTwo_x_reg <= smallRockTwo_x_next;
@@ -463,6 +507,8 @@ architecture sq_asteroids_arch of alien_graph_st is
             bigRockThree_y_reg <= bigRockThree_y_next;
             bigRockFour_x_reg <= bigRockFour_x_next;
             bigRockFour_y_reg <= bigRockFour_y_next;
+            x_missile_delta_reg <= x_missile_delta_next;
+            y_missile_delta_reg <= y_missile_delta_next;
             x_small_delta_reg <= x_small_delta_next;
             y_small_delta_reg <= y_small_delta_next;
             x_smallTwo_delta_reg <= x_smallTwo_delta_next;
@@ -607,6 +653,17 @@ architecture sq_asteroids_arch of alien_graph_st is
     bigRockFour_x_r <= bigRockFour_x_l + BIGROCK_FOUR_SIZE;
     bigRockFour_y_b <= bigRockFour_y_t + BIGROCK_FOUR_SIZE;
 
+    -- set coordinates of the missile projectile
+    missile_ball_x_l <= missile_ball_x_reg;
+    missile_ball_y_t <= missile_ball_y_reg;
+    missile_ball_x_r <= missile_ball_x_l + MISSILE_BALL_SIZE;
+    missile_ball_y_b <= missile_ball_y_t + MISSILE_BALL_SIZE;
+
+    -- pixel within missile_ball_projectile
+    sq_missile_ball_on <= '1' when (missile_ball_x_l <= pix_x) and
+        (pix_x <= missile_ball_x_r) and (missile_ball_y_t <= pix_y) and
+        (pix_y <= missile_ball_y_b) else '0';
+
     -- pixel within 1st square small asteroid
     sq_smallRockOne_on <= '1' when (smallRockOne_x_l <= pix_x) and
         (pix_x <= smallRockOne_x_r) and (smallRockOne_y_t <= pix_y) and
@@ -665,6 +722,7 @@ architecture sq_asteroids_arch of alien_graph_st is
 -- map scan coord to ROM addr/col -- use low order three
 -- bits of pixel and small asteroid positions.
 -- ROM row
+    rom_missile_addr <= pix_y(2 downto 0) - missile_ball_y_t(2 downto 0);
     rom_small_addr <= pix_y(2 downto 0) - smallRockOne_y_t(2 downto 0);
     rom_small_addr_two <= pix_y(2 downto 0) - smallRockTwo_y_t(2 downto 0);
     rom_small_addr_three <= pix_y(2 downto 0) - smallRockThree_y_t(2 downto 0);
@@ -677,6 +735,7 @@ architecture sq_asteroids_arch of alien_graph_st is
     rom_big_addr_three <= pix_y(3 downto 0) - bigRockThree_y_t(3 downto 0);
     rom_big_addr_four <= pix_y(3 downto 0) - bigRockFour_y_t(3 downto 0);
 -- ROM column
+    rom_missile_col <= pix_x(2 downto 0) - missile_ball_x_l(2 downto 0);
     rom_small_col <= pix_x(2 downto 0) - smallRockOne_x_l(2 downto 0);
     rom_small_col_two <= pix_x(2 downto 0) - smallRockTwo_x_l(2 downto 0);
     rom_small_col_three <= pix_x(2 downto 0) - smallRockThree_x_l(2 downto 0);
@@ -689,6 +748,7 @@ architecture sq_asteroids_arch of alien_graph_st is
     rom_big_col_three <= pix_x(3 downto 0) - bigRockThree_x_l(3 downto 0);
     rom_big_col_four <= pix_x(3 downto 0) - bigRockFour_x_l(3 downto 0);
 -- Get row data
+    rom_missile_data <= MISSILE_BALL_ROM(to_integer(rom_missile_addr));
     rom_small_data <= SMALLROCKONE_ROM(to_integer(rom_small_addr));
     rom_small_data_two <= SMALLROCKTWO_ROM(to_integer(rom_small_addr_two));
     rom_small_data_three <= SMALLROCKTHREE_ROM(to_integer(rom_small_addr_three));
@@ -701,6 +761,7 @@ architecture sq_asteroids_arch of alien_graph_st is
     rom_big_data_three <= BIGROCKTHREE_ROM(to_integer(rom_big_addr_three));
     rom_big_data_four <= BIGROCKFOUR_ROM(to_integer(rom_big_addr_four));
 -- Get column bit
+    rom_missile_bit <= rom_missile_data(to_integer(rom_missile_col));
     rom_small_bit <= rom_small_data(to_integer(rom_small_col));
     rom_small_bit_two <= rom_small_data_two(to_integer(rom_small_col_two));
     rom_small_bit_three <= rom_small_data_three(to_integer(rom_small_col_three));
@@ -714,6 +775,12 @@ architecture sq_asteroids_arch of alien_graph_st is
     rom_big_bit_four <= rom_big_data_four(to_integer(rom_big_col_four));
 
     --------------------------------------------------------------------------------------
+
+    --- Turn on missile ball if within the pixel square and the ROM bit is 1
+    rd_missile_ball_on <= '1' when (sq_missile_ball_on = '1') and
+    (rom_missile_bit = '1') else '0';
+    missile_ball_rgb <= "010"; -- red
+
 -- Turn small asteroid on only if within square and ROM bit is 1.
     rd_smallRockOne_on <= '1' when (sq_smallRockOne_on = '1') and
     (rom_small_bit = '1') else '0';
@@ -759,6 +826,12 @@ architecture sq_asteroids_arch of alien_graph_st is
     rd_bigRockFour_on <= '1' when (sq_bigRockFour_on = '1') and
     (rom_big_bit_four = '1') else '0';
     bigRockFour_rgb <= "000"; -- black
+
+    -- Update the missiles positions 60 times per second
+    missile_ball_x_next <= missile_ball_x_reg + x_missile_delta_reg when
+        refr_tick = '1' else missile_ball_x_reg;
+    missile_ball_y_next <= missile_ball_y_reg + y_missile_delta_reg when
+        refr_tick = '1' else missile_ball_y_reg;
 
 -- Update the small asteroids positions 60 times per second.
     smallRockOne_x_next <= smallRockOne_x_reg + x_small_delta_reg when
@@ -1049,6 +1122,26 @@ architecture sq_asteroids_arch of alien_graph_st is
         end if;
     end process;
 
+    process (missile_ball_x_reg, missile_ball_y_reg, refr_tick, shoot_btn, ship_y_reg)
+        begin
+        missile_ball_x_next <= missile_ball_x_reg; --default state
+
+        if (refr_tick = '1') then
+            -- Checking if firing button is pressed
+            if (shoot_btn = '1') then
+                -- Set starting position to the right side of the spaceship
+                missile_ball_x_next <= ship_x_r + MISSILE_BALL_SIZE;
+                missile_ball_y_next <= ship_y_reg + (SHIP_Y_SIZE / 2) - (MISSILE_BALL_SIZE / 2);
+            elsif (missile_ball_x_l > 0) then
+                -- Move missile projectile horizontally right to left
+                missile_ball_x_next <= missile_ball_x_reg - MISSILE_V_P;
+            end if;
+        end if;
+
+        missile_ball_x_reg <= missile_ball_x_next;
+        missile_ball_y_reg <= missile_ball_y_next;
+    end process;
+
     process (video_on, wall_on, ship_on, rd_smallRockOne_on, rd_smallRockTwo_on, 
         rd_smallRockThree_on, rd_smallRockFour_on, rd_smallRockFive_on, rd_smallRockSix_on, 
         rd_smallRockSeven_on, rd_bigRockOne_on, rd_bigRockTwo_on, rd_bigRockThree_on,
@@ -1063,6 +1156,8 @@ architecture sq_asteroids_arch of alien_graph_st is
                 graph_rgb <= wall_rgb;
             elsif (ship_on = '1') then
                 graph_rgb <= ship_rgb;
+            elsif (rd_missile_ball_on = '1') then
+                graph_rgb <= missile_ball_rgb;
             elsif (rd_smallRockOne_on = '1') then
                 graph_rgb <= smallRockOne_rgb;
             elsif (rd_smallRockTwo_on = '1') then
@@ -1090,4 +1185,12 @@ architecture sq_asteroids_arch of alien_graph_st is
             end if;
         end if;
     end process;
+
+    hit_cnt_next <= hit_cnt_reg+1 when ((bar_x_l < ball_x_r)
+                        and (x_delta_reg = BALL_V_N)
+                        and refr_tick = '1')
+                        else hit_cnt_reg;
+
+    hit_cnt <= std_logic_vector(hit_cnt_reg);
+
 end sq_asteroids_arch;  

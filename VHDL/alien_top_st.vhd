@@ -9,7 +9,8 @@ entity alien_top_st is
         rgb_top: out std_logic_vector(2 downto 0);
         vga_pixel_tick: out std_logic;
         blank: out std_logic;
-        comp_sync: out std_logic
+        comp_sync: out std_logic;
+        hit_cnt_debug: out std_logic_vector(2 downto 0);
     );
 end alien_top_st;
 
@@ -18,6 +19,10 @@ architecture arch of alien_top_st is
     signal video_on: std_logic;
     signal rgb_reg, rgb_next: std_logic_vector(2 downto 0);
     signal rgb: std_logic_vector(2 downto 0);
+    signal pong_graph_rgb: std_logic_vector(2 downto 0);
+    signal hit_cnter_rgb: std_logic_vector(2 downto 0);
+    signal hit_cnt: std_logic_vector(2 downto 0);
+    signal sq_hit_cnter_on: std_logic;
     signal p_tick: std_logic;
 
     begin
@@ -35,10 +40,17 @@ architecture arch of alien_top_st is
             video_on=>video_on, pixel_x=>pixel_x,
             pixel_y=>pixel_y, graph_rgb=>rgb_next);
 
+    counter_disp_unit: entity work.score_counter_disp
+        port map(pixel_x=>pixel_x, pixel_y=>pixel_y,
+            hit_cnt=>hit_cnt, sq_hit_cnter_on_output=>sq_hit_cnter_on,
+            graph_rgb=>hit_cnter_rgb);
+
     vga_pixel_tick <= p_tick;
 -- Set the high order bits of the video DAC for each
 -- of the three colors
     rgb_top <= rgb;
+
+    vga_pixel_tick <= p_tick;
 
 -- rgb buffer, graph_rgb is routed to the output through
 -- an output buffer -- loaded when p_tick = ?1?.
@@ -54,5 +66,9 @@ architecture arch of alien_top_st is
 
     rgb <= rgb_reg;
 
+    rgb_next <= hit_cnter_rgb when sq_hit_cnter_on = '1' else
+                    pong_graph_rgb;
+
     blank <= video_on;
+    hit_cnt_debug <= hit_cnt;
 end arch;
