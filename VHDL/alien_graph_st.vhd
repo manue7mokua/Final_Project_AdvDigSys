@@ -1186,8 +1186,8 @@ architecture sq_asteroids_arch of alien_graph_st is
         end if;
     end process;
 
-    hit_cnt_next <= hit_cnt_reg+1 when ((bar_x_l < ball_x_r)
-                    and (x_delta_reg = BALL_V_N)
+    hit_cnt_next <= hit_cnt_reg+1 when ((ship_x_l < smallRockOne_x_r)
+                    and (x_small_delta_reg = SMALLROCK_V_N)
                     and refr_tick = '1')
                     else hit_cnt_reg;
 
