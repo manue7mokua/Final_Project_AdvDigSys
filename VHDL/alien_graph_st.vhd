@@ -470,7 +470,7 @@ architecture sq_asteroids_arch of alien_graph_st is
             y_smallFive_delta_reg <= ("0000000100");
             x_smallSix_delta_reg <= ("0000000100");
             y_smallSix_delta_reg <= ("0000000100");
-            x_smallSevem_delta_reg <= ("0000000100");
+            x_smallSeven_delta_reg <= ("0000000100");
             y_smallSeven_delta_reg <= ("0000000100");
             x_big_delta_reg <= ("0000000100");
             y_big_delta_reg <= ("0000000100");
@@ -1187,9 +1187,9 @@ architecture sq_asteroids_arch of alien_graph_st is
     end process;
 
     hit_cnt_next <= hit_cnt_reg+1 when ((bar_x_l < ball_x_r)
-                        and (x_delta_reg = BALL_V_N)
-                        and refr_tick = '1')
-                        else hit_cnt_reg;
+                    and (x_delta_reg = BALL_V_N)
+                    and refr_tick = '1')
+                    else hit_cnt_reg;
 
     hit_cnt <= std_logic_vector(hit_cnt_reg);
 

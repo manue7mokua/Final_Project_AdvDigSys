@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenRun Id="synth_1" LaunchPart="xc7a100tcsg324-1" LaunchTime="1713391989" LaunchIncrCheckpoint="$PSRCDIR/utils_1/imports/synth_1/alien_top_st.dcp">
   <File Type="PA-TCL" Name="alien_top_st.tcl"/>
-  <File Type="RDS-PROPCONSTRS" Name="alien_top_st_drc_synth.rpt"/>
   <File Type="REPORTS-TCL" Name="alien_top_st_reports.tcl"/>
   <File Type="RDS-RDS" Name="alien_top_st.vds"/>
   <File Type="RDS-UTIL" Name="alien_top_st_utilization_synth.rpt"/>
   <File Type="RDS-UTIL-PB" Name="alien_top_st_utilization_synth.pb"/>
   <File Type="RDS-DCP" Name="alien_top_st.dcp"/>
-  <File Type="VDS-TIMINGSUMMARY" Name="alien_top_st_timing_summary_synth.rpt"/>
-  <File Type="VDS-TIMING-PB" Name="alien_top_st_timing_summary_synth.pb"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
     <Filter Type="Srcs"/>
     <File Path="$PSRCDIR/sources_1/imports/VHDL/alien_graph_st.vhd">
