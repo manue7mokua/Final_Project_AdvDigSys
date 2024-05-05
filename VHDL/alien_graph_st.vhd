@@ -48,7 +48,7 @@ architecture sq_asteroids_arch of alien_graph_st is
 
 -- bar moving velocity when a button is pressed
 -- the amount the bar is moved.
-    constant SHIP_V: integer:= 2;
+    constant SHIP_V: integer:= 1;
 
 -- Firing missiles for asteroid
     constant MISSILE_BALL_SIZE: integer := 8;
