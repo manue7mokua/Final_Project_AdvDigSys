@@ -5,12 +5,13 @@ entity alien_top_st is
     port(
         clk, reset: in std_logic;
         btn: in std_logic_vector(3 downto 0);
+        shoot_btn: in std_logic;
         hsync, vsync: out std_logic;
         rgb_top: out std_logic_vector(2 downto 0);
         vga_pixel_tick: out std_logic;
         blank: out std_logic;
         comp_sync: out std_logic;
-        hit_cnt_debug: out std_logic_vector(2 downto 0);
+        hit_cnt_debug: out std_logic_vector(2 downto 0)
     );
 end alien_top_st;
 
@@ -36,7 +37,7 @@ architecture arch of alien_top_st is
     -- instantiate pixel generation circuit
     alien_graph_st_unit: entity
         work.alien_graph_st(sq_asteroids_arch)
-        port map(clk=>clk, reset=>reset, btn=>btn,
+        port map(clk=>clk, reset=>reset, btn=>btn, shoot_btn=>shoot_btn,
             video_on=>video_on, pixel_x=>pixel_x,
             pixel_y=>pixel_y, graph_rgb=>rgb_next);
 

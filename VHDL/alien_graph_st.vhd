@@ -26,6 +26,9 @@ architecture sq_asteroids_arch of alien_graph_st is
     -- x, y coordinates (0,0 to (639, 479)
     signal pix_x, pix_y: unsigned(9 downto 0);
 
+    -- counter tracking signals
+    signal hit_cnt_reg, hit_cnt_next: unsigned(2 downto 0);
+
     -- screen dimensions
     constant MAX_X: integer := 640;
     constant MAX_Y: integer := 480;
