@@ -10,8 +10,7 @@ entity alien_top_st is
         rgb_top: out std_logic_vector(2 downto 0);
         vga_pixel_tick: out std_logic;
         blank: out std_logic;
-        comp_sync: out std_logic;
-        hit_cnt_debug: out std_logic_vector(2 downto 0)
+        comp_sync: out std_logic
     );
 end alien_top_st;
 
@@ -20,7 +19,7 @@ architecture arch of alien_top_st is
     signal video_on: std_logic;
     signal rgb_reg, rgb_next: std_logic_vector(2 downto 0);
     signal rgb: std_logic_vector(2 downto 0);
-    signal pong_graph_rgb: std_logic_vector(2 downto 0);
+    signal alien_graph_rgb: std_logic_vector(2 downto 0);
     signal hit_cnter_rgb: std_logic_vector(2 downto 0);
     signal hit_cnt: std_logic_vector(2 downto 0);
     signal sq_hit_cnter_on: std_logic;
@@ -68,8 +67,7 @@ architecture arch of alien_top_st is
     rgb <= rgb_reg;
 
     rgb_next <= hit_cnter_rgb when sq_hit_cnter_on = '1' else
-                    pong_graph_rgb;
+                    alien_graph_rgb;
 
     blank <= video_on;
-    hit_cnt_debug <= hit_cnt;
 end arch;

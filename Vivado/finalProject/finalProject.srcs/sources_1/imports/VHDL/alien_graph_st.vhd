@@ -272,7 +272,6 @@ architecture sq_asteroids_arch of alien_graph_st is
     );
 
     signal rom_missile_addr, rom_missile_col: unsigned(2 downto 0);
-    signal rom_missile_addr_two, rom_missile_col_two: unsigned(2 downto 0);
     signal rom_missile_data: std_logic_vector(7 downto 0);
     signal rom_missile_bit:  std_logic;
     signal rom_small_addr, rom_small_col: unsigned(2 downto 0);
@@ -435,6 +434,7 @@ architecture sq_asteroids_arch of alien_graph_st is
         if (reset = '1') then
             ship_x_reg <= (others => '0');
             ship_y_reg <= (others => '0');
+            hit_cnt_reg <= (others => '0');
             missile_ball_x_reg <= "0000001000";
             missile_ball_y_reg <= "0000001000";
             smallRockOne_x_reg <= "0100000000";
@@ -486,6 +486,7 @@ architecture sq_asteroids_arch of alien_graph_st is
         elsif (clk'event and clk = '1') then
             ship_x_reg <= ship_x_next;
             ship_y_reg <= ship_y_next;
+            hit_cnt_reg <= hit_cnt_next;
             missile_ball_x_reg <= missile_ball_x_next;
             missile_ball_y_reg <= missile_ball_y_next;
             smallRockOne_x_reg <= smallRockOne_x_next;
