@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2023.2 (win64) Build 4029153 Fri Oct 13 20:14:34 MDT 2023
-| Date             : Wed Apr 17 18:18:23 2024
+| Date             : Mon May  6 10:26:08 2024
 | Host             : Manue7 running 64-bit major release  (build 9200)
 | Command          : report_power -file alien_top_st_power_routed.rpt -pb alien_top_st_power_summary_routed.pb -rpx alien_top_st_power_routed.rpx
 | Design           : alien_top_st
@@ -30,10 +30,10 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.104        |
+| Total On-Chip Power (W)  | 0.106        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 0.007        |
+| Dynamic (W)              | 0.009        |
 | Device Static (W)        | 0.097        |
 | Effective TJA (C/W)      | 4.6          |
 | Max Ambient (C)          | 84.5         |
@@ -53,15 +53,16 @@ Table of Contents
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
 | Clocks         |     0.002 |        3 |       --- |             --- |
-| Slice Logic    |    <0.001 |     1091 |       --- |             --- |
-|   LUT as Logic |    <0.001 |      549 |     63400 |            0.87 |
-|   CARRY4       |    <0.001 |      124 |     15850 |            0.78 |
-|   Register     |    <0.001 |      179 |    126800 |            0.14 |
-|   Others       |     0.000 |        4 |       --- |             --- |
-| Signals        |    <0.001 |      492 |       --- |             --- |
-| I/O            |     0.004 |       14 |       210 |            6.67 |
+| Slice Logic    |     0.002 |     2389 |       --- |             --- |
+|   LUT as Logic |     0.001 |     1251 |     63400 |            1.97 |
+|   CARRY4       |    <0.001 |      266 |     15850 |            1.68 |
+|   Register     |    <0.001 |      360 |    126800 |            0.28 |
+|   F7/F8 Muxes  |    <0.001 |        9 |     63400 |            0.01 |
+|   Others       |     0.000 |        5 |       --- |             --- |
+| Signals        |    <0.001 |     1115 |       --- |             --- |
+| I/O            |     0.004 |       15 |       210 |            7.14 |
 | Static Power   |     0.097 |          |           |                 |
-| Total          |     0.104 |          |           |                 |
+| Total          |     0.106 |          |           |                 |
 +----------------+-----------+----------+-----------+-----------------+
 
 
@@ -71,7 +72,7 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
-| Vccint    |       1.000 |     0.018 |       0.003 |      0.015 |       NA    | Unspecified | NA         |
+| Vccint    |       1.000 |     0.020 |       0.005 |      0.015 |       NA    | Unspecified | NA         |
 | Vccaux    |       1.800 |     0.018 |       0.000 |      0.018 |       NA    | Unspecified | NA         |
 | Vcco33    |       3.300 |     0.005 |       0.001 |      0.004 |       NA    | Unspecified | NA         |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
@@ -140,8 +141,9 @@ Table of Contents
 +-----------------------+-----------+
 | Name                  | Power (W) |
 +-----------------------+-----------+
-| alien_top_st          |     0.007 |
-|   alien_graph_st_unit |     0.002 |
+| alien_top_st          |     0.009 |
+|   alien_graph_st_unit |     0.004 |
+|   vga_sync_unit       |     0.001 |
 +-----------------------+-----------+
 
 

@@ -8,8 +8,7 @@ use ieee.numeric_std.all;
 entity alien_graph_st is
     port(
         clk, reset: in std_logic;
-        btn: in std_logic_vector(3 downto 0);
-        shoot_btn: in std_logic;
+        btn: in std_logic_vector(4 downto 0);
         video_on: in std_logic;
         pixel_x, pixel_y: in std_logic_vector(9 downto 0);
         hit_cnt: out std_logic_vector(2 downto 0); 
@@ -435,8 +434,8 @@ architecture sq_asteroids_arch of alien_graph_st is
             ship_x_reg <= (others => '0');
             ship_y_reg <= (others => '0');
             hit_cnt_reg <= (others => '0');
-            missile_ball_x_reg <= "0000001000";
-            missile_ball_y_reg <= "0000001000";
+            missile_ball_x_reg <= "0000001011";
+            missile_ball_y_reg <= "0000001011";
             smallRockOne_x_reg <= "0100000000";
             smallRockOne_y_reg <= "0100000000";
             smallRockTwo_x_reg <= "0000000010";
@@ -591,6 +590,12 @@ architecture sq_asteroids_arch of alien_graph_st is
         end if;
     end process;
 
+    -- set coordinates of missile projectile
+    missile_ball_x_l <= missile_ball_x_reg;
+    missile_ball_y_t <= missile_ball_y_reg;
+    missile_ball_x_r <= missile_ball_x_l + MISSILE_BALL_SIZE;
+    missile_ball_y_b <= missile_ball_y_t + MISSILE_BALL_SIZE;
+
     -- set coordinates of 1st square small asteroid.
     smallRockOne_x_l <= smallRockOne_x_reg;
     smallRockOne_y_t <= smallRockOne_y_reg;
@@ -656,12 +661,6 @@ architecture sq_asteroids_arch of alien_graph_st is
     bigRockFour_y_t <= bigRockFour_y_reg;
     bigRockFour_x_r <= bigRockFour_x_l + BIGROCK_FOUR_SIZE;
     bigRockFour_y_b <= bigRockFour_y_t + BIGROCK_FOUR_SIZE;
-
-    -- set coordinates of the missile projectile
-    missile_ball_x_l <= missile_ball_x_reg;
-    missile_ball_y_t <= missile_ball_y_reg;
-    missile_ball_x_r <= missile_ball_x_l + MISSILE_BALL_SIZE;
-    missile_ball_y_b <= missile_ball_y_t + MISSILE_BALL_SIZE;
 
     -- pixel within missile_ball_projectile
     sq_missile_ball_on <= '1' when (missile_ball_x_l <= pix_x) and
@@ -831,12 +830,6 @@ architecture sq_asteroids_arch of alien_graph_st is
     (rom_big_bit_four = '1') else '0';
     bigRockFour_rgb <= "000"; -- black
 
-    -- Update the missiles positions 60 times per second
-    missile_ball_x_next <= missile_ball_x_reg + x_missile_delta_reg when
-        refr_tick = '1' else missile_ball_x_reg;
-    missile_ball_y_next <= missile_ball_y_reg + y_missile_delta_reg when
-        refr_tick = '1' else missile_ball_y_reg;
-
 -- Update the small asteroids positions 60 times per second.
     smallRockOne_x_next <= smallRockOne_x_reg + x_small_delta_reg when
         refr_tick = '1' else smallRockOne_x_reg;
@@ -906,7 +899,7 @@ architecture sq_asteroids_arch of alien_graph_st is
         smallRockFour_x_r, smallRockFour_y_b, smallRockFive_y_t, smallRockFive_x_l,
         smallRockFive_x_r, smallRockFive_y_b, smallRockSix_y_t, smallRockSix_x_l,
         smallRockSix_x_r, smallRockSix_y_b, smallRockSeven_y_t, smallRockSeven_x_l,
-        smallRockSeven_x_r, smallRockSeven_y_b, ship_y_t, ship_y_b)
+        smallRockSeven_x_r, smallRockSeven_y_b, ship_y_t, ship_y_b, ship_x_l, ship_x_r)
         begin
         x_small_delta_next <= x_small_delta_reg;
         y_small_delta_next <= y_small_delta_reg;
@@ -1044,7 +1037,7 @@ architecture sq_asteroids_arch of alien_graph_st is
 
     process(x_big_delta_reg, y_big_delta_reg, x_bigTwo_delta_reg, y_bigTwo_delta_reg,
         x_bigThree_delta_reg, y_bigThree_delta_reg, x_bigFour_delta_reg, y_bigFour_delta_reg,
-        ship_y_t, ship_y_b, bigRockOne_y_b, bigRockOne_y_t, bigRockOne_x_l, bigRockOne_x_r, 
+        ship_y_t, ship_y_b, ship_x_l, ship_x_r, bigRockOne_y_b, bigRockOne_y_t, bigRockOne_x_l, bigRockOne_x_r, 
         bigRockTwo_y_b, bigRockTwo_y_t, bigRockTwo_x_l, bigRockTwo_x_r,
         bigRockThree_y_b, bigRockThree_y_t, bigRockThree_x_l, bigRockThree_x_r,
         bigRockFour_y_b, bigRockFour_y_t, bigRockFour_x_l, bigRockFour_x_r)
@@ -1126,30 +1119,32 @@ architecture sq_asteroids_arch of alien_graph_st is
         end if;
     end process;
 
-    process (missile_ball_x_reg, missile_ball_y_reg, refr_tick, shoot_btn, ship_y_reg)
+    process (missile_ball_x_reg, missile_ball_y_reg, refr_tick, btn(4), ship_y_reg, 
+        x_missile_delta_reg, y_missile_delta_reg, missile_ball_x_l, ship_x_r, missile_ball_x_next, missile_ball_y_next)
         begin
         missile_ball_x_next <= missile_ball_x_reg; --default state
+        missile_ball_y_next <= missile_ball_y_reg; --default state
+
+        x_missile_delta_next <= x_missile_delta_reg;
+        y_missile_delta_next <= y_missile_delta_reg;
 
         if (refr_tick = '1') then
             -- Checking if firing button is pressed
-            if (shoot_btn = '1') then
+            if (btn(4) = '1') then
                 -- Set starting position to the right side of the spaceship
-                missile_ball_x_next <= ship_x_r + MISSILE_BALL_SIZE;
-                missile_ball_y_next <= ship_y_reg + (SHIP_Y_SIZE / 2) - (MISSILE_BALL_SIZE / 2);
+                missile_ball_x_next <= ship_x_r + (SHIP_X_SIZE/2) - (MISSILE_BALL_SIZE/2);
+                missile_ball_y_next <= ship_y_reg;
             elsif (missile_ball_x_l > 0) then
                 -- Move missile projectile horizontally right to left
                 missile_ball_x_next <= missile_ball_x_reg - MISSILE_V_P;
             end if;
         end if;
-
-        missile_ball_x_reg <= missile_ball_x_next;
-        missile_ball_y_reg <= missile_ball_y_next;
     end process;
 
-    process (video_on, wall_on, ship_on, rd_smallRockOne_on, rd_smallRockTwo_on, 
+    process (video_on, wall_on, ship_on, rd_missile_ball_on, rd_smallRockOne_on, rd_smallRockTwo_on, 
         rd_smallRockThree_on, rd_smallRockFour_on, rd_smallRockFive_on, rd_smallRockSix_on, 
         rd_smallRockSeven_on, rd_bigRockOne_on, rd_bigRockTwo_on, rd_bigRockThree_on,
-        rd_bigRockFour_on, wall_rgb, ship_rgb, smallRockOne_rgb, smallRockTwo_rgb, smallRockThree_rgb, 
+        rd_bigRockFour_on, wall_rgb, ship_rgb, missile_ball_rgb, smallRockOne_rgb, smallRockTwo_rgb, smallRockThree_rgb, 
         smallRockFour_rgb, smallRockFive_rgb, smallRockSix_rgb, smallRockSeven_rgb, 
         bigRockOne_rgb, bigRockTwo_rgb, bigRockThree_rgb, bigRockFour_rgb)
         begin

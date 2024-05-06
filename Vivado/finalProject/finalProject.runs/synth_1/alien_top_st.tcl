@@ -71,9 +71,8 @@ proc create_report { reportName command } {
 }
 OPTRACE "synth_1" START { ROLLUP_AUTO }
 set_param checkpoint.writeSynthRtdsInDcp 1
-set_param chipscope.maxJobs 1
-set_param synth.incrementalSynthesisCache {C:/Users/Mokua Manuel/AppData/Roaming/Xilinx/Vivado/.Xil/Vivado-4576-Manue7/incrSyn}
-set_param xicom.use_bs_reader 1
+set_param synth.incrementalSynthesisCache {C:/Users/Mokua Manuel/AppData/Roaming/Xilinx/Vivado/.Xil/Vivado-11008-Manue7/incrSyn}
+set_msg_config -id {Common 17-41} -limit 10000000
 set_msg_config -id {Synth 8-256} -limit 10000
 set_msg_config -id {Synth 8-638} -limit 10000
 OPTRACE "Creating in-memory project" START { }
@@ -93,6 +92,7 @@ OPTRACE "Adding files" START { }
 read_vhdl -library xil_defaultlib {
   {C:/Users/Mokua Manuel/OneDrive/Desktop/Final_Project_AdvDigSys/Vivado/finalProject/finalProject.srcs/sources_1/imports/VHDL/alien_graph_st.vhd}
   {C:/Users/Mokua Manuel/OneDrive/Desktop/Final_Project_AdvDigSys/Vivado/finalProject/finalProject.srcs/sources_1/imports/VHDL/vga_sync.vhd}
+  {C:/Users/Mokua Manuel/OneDrive/Desktop/Final_Project_AdvDigSys/Vivado/finalProject/finalProject.srcs/sources_1/imports/VHDL/score_counter_display.vhd}
   {C:/Users/Mokua Manuel/OneDrive/Desktop/Final_Project_AdvDigSys/Vivado/finalProject/finalProject.srcs/sources_1/imports/VHDL/alien_top_st.vhd}
 }
 OPTRACE "Adding files" END { }

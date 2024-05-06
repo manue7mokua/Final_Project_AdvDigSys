@@ -4,8 +4,7 @@ use ieee.std_logic_1164.all;
 entity alien_top_st is
     port(
         clk, reset: in std_logic;
-        btn: in std_logic_vector(3 downto 0);
-        shoot_btn: in std_logic;
+        btn: in std_logic_vector(4 downto 0);
         hsync, vsync: out std_logic;
         rgb_top: out std_logic_vector(2 downto 0);
         vga_pixel_tick: out std_logic;
@@ -36,16 +35,14 @@ architecture arch of alien_top_st is
     -- instantiate pixel generation circuit
     alien_graph_st_unit: entity
         work.alien_graph_st(sq_asteroids_arch)
-        port map(clk=>clk, reset=>reset, btn=>btn, shoot_btn=>shoot_btn,
+        port map(clk=>clk, reset=>reset, btn=>btn,
             video_on=>video_on, pixel_x=>pixel_x,
-            pixel_y=>pixel_y, graph_rgb=>rgb_next);
+            pixel_y=>pixel_y, hit_cnt=>hit_cnt, graph_rgb=>alien_graph_rgb);
 
     counter_disp_unit: entity work.score_counter_disp
         port map(pixel_x=>pixel_x, pixel_y=>pixel_y,
             hit_cnt=>hit_cnt, sq_hit_cnter_on_output=>sq_hit_cnter_on,
             graph_rgb=>hit_cnter_rgb);
-
-    vga_pixel_tick <= p_tick;
 -- Set the high order bits of the video DAC for each
 -- of the three colors
     rgb_top <= rgb;
