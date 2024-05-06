@@ -21,9 +21,9 @@ architecture Behavioral of score_counter_disp is
 
     -- Square cnter size and boundaries
     constant CNT_SIZE: integer := 16;
-    constant HIT_CNT_X_L: integer := 610;
+    constant HIT_CNT_X_L: integer := 580;
     constant HIT_CNT_X_R: integer:= HIT_CNT_X_L + CNT_SIZE - 1;
-    constant HIT_CNT_Y_T: integer := 80;
+    constant HIT_CNT_Y_T: integer := 60;
     constant HIT_CNT_Y_B: integer:= HIT_CNT_Y_T + CNT_SIZE - 1;
 
     -- new data type to store the 16x16 rom images of counter values 0-7

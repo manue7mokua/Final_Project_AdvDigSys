@@ -21,7 +21,10 @@ architecture arch of alien_top_st is
     signal alien_graph_rgb: std_logic_vector(2 downto 0);
     signal hit_cnter_rgb: std_logic_vector(2 downto 0);
     signal hit_cnt: std_logic_vector(2 downto 0);
+    signal life_cnter_rgb: std_logic_vector(2 downto 0);
+    signal life_cnt: std_logic_vector(1 downto 0);
     signal sq_hit_cnter_on: std_logic;
+    signal sq_life_cnter_on: std_logic;
     signal p_tick: std_logic;
 
     begin
@@ -43,6 +46,11 @@ architecture arch of alien_top_st is
         port map(pixel_x=>pixel_x, pixel_y=>pixel_y,
             hit_cnt=>hit_cnt, sq_hit_cnter_on_output=>sq_hit_cnter_on,
             graph_rgb=>hit_cnter_rgb);
+
+    life_disp_unit: entity work.life_counter_disp
+        port map(pixel_x=>pixel_x, pixel_y=>pixel_y,
+            life_cnt=>life_cnt, sq_life_cnter_on_output=>sq_life_cnter_on,
+            graph_rgb=>life_cnter_rgb);
 -- Set the high order bits of the video DAC for each
 -- of the three colors
     rgb_top <= rgb;
@@ -64,6 +72,7 @@ architecture arch of alien_top_st is
     rgb <= rgb_reg;
 
     rgb_next <= hit_cnter_rgb when sq_hit_cnter_on = '1' else
+                life_cnter_rgb when sq_life_cnter_on = '1' else
                     alien_graph_rgb;
 
     blank <= video_on;
