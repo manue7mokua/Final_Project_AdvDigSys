@@ -921,13 +921,7 @@ architecture sq_asteroids_arch of alien_graph_st is
     end process;
 
     hit_cnt_next <= hit_cnt_reg+1 when ((missile_ball_x_l < bigRockOne_x_r)
-                    and (x_missile_delta_reg = MISSILE_V_N)
-                    and refr_tick = '1') else
-                    hit_cnt_reg+1 when ((missile_ball_x_l < bigRockTwo_x_r)
-                    and (x_missile_delta_reg = MISSILE_V_N)
-                    and refr_tick = '1') else 
-                    hit_cnt_reg+1 when ((missile_ball_x_l < bigRockThree_x_r)
-                    and (x_missile_delta_reg = MISSILE_V_N)
+                    and (x_big_delta_reg = MISSILE_V_N)
                     and refr_tick = '1')
                     else hit_cnt_reg;
 
